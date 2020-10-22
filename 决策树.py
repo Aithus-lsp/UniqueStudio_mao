@@ -7,17 +7,19 @@
 """
 
 
-import pandas as pd 
-import matplotlib.pyplot as plt 
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd  
 
 
-#开始导入数据
+#开始导入数据,以outcome为输出
 data = pd.read_csv("./diabetes.csv")
 
 
 class DecisionTree(object):
 """一颗通用决策树。
-将保存一些基础属性，函数，有：
+不对特征进行选择，丢弃。
+它将保存一些基础属性，函数，有：
 """
 
     def __init__(self, algor=None, Thresh=(0.01,10), ThreshVal=0.5):
@@ -27,8 +29,22 @@ class DecisionTree(object):
         self.__ThreshVal =
 
     #寻找分界点
+    #计算熵,以e为底,使用极大似然估计,输入为一个series
+    def cal_entropy(self, series):
+        entropy = sum([])
+        return entropy
+    def cal_bene(self):
+    """输入数据计算信息增益"""
+        bene_dict={}
+        out_bene = cal_entropy(data.Outcome)
+        for x in data.index:
+            bene_dict[x] = cal_entropy(series)
+        return bene_dict
+        
+        
     def ChooseBest(self, ):
-        #使用gini指数
+        #使用信息增益比
+        
 
     #建造树
     def Buildtree(self, ):
@@ -42,9 +58,15 @@ class DecisionTree(object):
 
 #一颗ID3
 class ID3(DecisionTree):
+    def __init__(self, algor="ID3", Thresh=(0.0001, 8), threshVal=0.5):
+        super(ID3, self).__init__()
+        self.__algor = algor
+        self.__Thresh = Thresh
+        self.__threshVal = threshVal
 
 
 #测试
 if __name__ == "__main__":
     print(data)
-    tree = 
+    Tree = ID3()
+    Tree.Buildtree
