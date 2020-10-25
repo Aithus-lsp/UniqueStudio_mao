@@ -27,7 +27,7 @@ for x in data_cut:
     if x != "Outcome":
         data_cut[x] = pd.cut(data_cut[x], 20)
 #划分训练、测试数据
-train_data = data_cut[:int(len(data_cut) * 0.9)]
+train_data = data_cut
 test_data = data[int(len(data_cut) * 0.9):]
 
 
