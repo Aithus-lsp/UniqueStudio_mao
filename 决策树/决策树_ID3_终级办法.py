@@ -21,7 +21,7 @@ data_3 = data_2
 index_2 = data_2.columns
 data_max = data_2.max(axis=0)
 data_min = data_2.min(axis=0)
-#分箱
+#分箱,输出为data_3
 for x in data_3:
     data_3[x] = pd.cut(data_3[x], 20)
 
@@ -64,19 +64,19 @@ def Choose_series(data_series):
 def Choose_DataFrame(data_dataframe):
     """计算信息增益
 
-    输入一个dataframe(包含outcome),输出最佳特征及其信息增益
+    输入一个dataframe(包含outcome),输出最佳特征及其信息增益,主要面向group的apply编写
     """
     #生成记录字典
     dic = {}
     #取出outcome
     Outcome_val = data_dataframe["Outcome"].values
     #去除outcome
-    data_dataframe.drop("Outcome", axis=1, inplace=True)
+    data_dataframe = data_dataframe.drop("Outcome", axis=1)
     #填充字典
     for x in data_dataframe:
         #生成临时sreies
         new_ser = pd.Series(Outcome_val, data_dataframe[x].values)
-        entropy = cal_entropy(new_ser)
+        entropy = Choose_series(new_ser)
         dic[x] = entropy
     #由字典取出最佳特征及其信息增益
     #还是用series吧
@@ -113,13 +113,17 @@ def Choose_feature(data_fra):
         bene_dict[x] = entropy
 
 class ID3(object):
-    def __init__(self, real_tree={}):
+    def __init__(self, real_tree=data, deep=0):
     """一棵树的基本要素。
     realtree: 储存树
+    deep: 当前节点深度
     """
         self.real_tree = real_tree
+        self.deep = deep
 
     def BuildTree(self):
+        if 
+        #改良data，方便索引
         self.realtree = data.set_index(list(index_2))
 
 
