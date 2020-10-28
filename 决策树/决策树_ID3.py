@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python3.8
 """真的要用class呀( ⊙ o ⊙ )！
 
 这是关于决策树尝试实验的文档，打算先写ID3，写其它树时会从这里import,但是这里的注释不会使用模块的标准注释。
