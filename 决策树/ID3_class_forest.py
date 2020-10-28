@@ -312,6 +312,4 @@ if __name__ == "__main__":
     id3tree = ID3(Choose_DataFrame, cal_entropy_values)
     id3tree.Build_forest(train_data)
     print(id3tree.forest)
-    q = test_data.loc[1].drop("Outcome")
-    id3tree.GO_forset(q)
     id3tree.Paint_forest()

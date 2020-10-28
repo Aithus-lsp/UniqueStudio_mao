@@ -50,7 +50,7 @@ def ChooseNode(data_dataframe):
         #生成临时计数字典
         dic={}
         #n为序号而不是目录
-        for n in len(new_ser):
+        for n in range(len(new_ser)):
             data_1 = new_ser[:n]
             data_2 = new_ser[n:]
             gini = (GINI(data_1) * n + GINI(data_2) * (len(new_ser) - n)) / len(new_ser)
