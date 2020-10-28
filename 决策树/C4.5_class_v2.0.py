@@ -295,7 +295,7 @@ class C45(DecisionTree):
 
 if __name__ == "__main__":
     #使用
-    c45tree = CART(Choose_DataFrame, cal_entropy_values)
+    c45tree = C45(Choose_DataFrame, cal_entropy_values)
     c45tree.Build(train_data)
     print(c45tree.tree)
     q = test_data.loc[700].drop("Outcome")
