@@ -94,7 +94,7 @@ def Choose_DataFrame(data_dataframe):
     return (feature, sub_dict, new_ser_1[index_1])
 
 
-class DecisionTree(object):
+class DecisionForest(object):
     """原始树，定义了一些交叉的方法。
 
     SubBuild: Build子方法，建立树，树的叶结点包含输出和损失。
@@ -244,9 +244,7 @@ class DecisionTree(object):
         self.SubPaint(self.tree)
         self.pic.view()
 
-
-
-    def Paint_forest():
+    def Paint_forest(self):
         for x in self.forest:
             self.SubPaint(x)
         self.pic.view()
@@ -255,18 +253,18 @@ class DecisionTree(object):
         """随机森林构建函数，以去一个特征为方法。"""
         #森林记录列表
         lis = []
-        for x in data2built.drop("Outcome"):
-            minidata = data2built.drop(x)
-            lis.append((self.SubBuild(minidata))
-        self.forest = lis 
-    
+        for x in data2built.drop("Outcome", axis=1):
+            minidata = data2built.drop(x, axis=1)
+            lis.append((self.SubBuild(minidata)))
+        self.forest = lis
+        return None
+
     def GO_forset(self, INindex):
         """随机森林索引函数"""
         #结果记录
         lis = []
         for x in self.forest:
             index_copy = copy.deepcopy(INindex)
-            index_copy = index_copy[]
             lis.append(self.SubGO(INindex, x)[0])
         #利用series输出
         series = pd.Series(lis)
@@ -274,7 +272,7 @@ class DecisionTree(object):
 
 
 #继承
-class ID3(DecisionTree):
+class ID3(DecisionForest):
     """继承于Decision的ID3"""
     def Cut(self, para=0.1):
         """定义剪枝函数。
@@ -313,7 +311,7 @@ if __name__ == "__main__":
     #使用
     id3tree = ID3(Choose_DataFrame, cal_entropy_values)
     id3tree.Build_forest(train_data)
-    print(id3tree.tree)
+    print(id3tree.forest)
     q = test_data.loc[1].drop("Outcome")
     id3tree.GO_forset(q)
     id3tree.Paint_forest()

@@ -1,11 +1,11 @@
 #!/usr/bin/env python3.8
 """
-一棵CART。
-以下内容许多复制于ID3_究极办法
+一棵CART，以下内容许多复制于ID3_究极办法与original_class
 
 运行时会警告除零，但没影响。
 !!!二分类树好像不用分箱。
 这个数据集就运算上来说偏大(我的小破机跑了半分钟)，但是在数据分析上事实上偏小。
+这个画图好像有大问题．
 """
 
 
@@ -13,6 +13,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd  
 import copy
+from graphviz import Digraph
 
 
 #开始导入数据,以outcome为输出
@@ -24,7 +25,7 @@ data = pd.read_csv("./diabetes.csv")
 data.dropna(inplace=True)
 #划分训练、测试数据
 train_data = data
-test_data = data[int(len(data_cut) * 0.9):]
+test_data = data[int(len(data) * 0.9):]
 
 
 #定义通用函数
@@ -266,7 +267,7 @@ class CART(DecisionTree):
 
 if __name__ == "__main__":
     #使用
-    carttree = CART(Choose_DataFrame, cal_entropy_values)
+    carttree = CART(ChooseNode, GINI)
     carttree.Build(train_data)
     print(carttree.tree)
     q = test_data.loc[700].drop("Outcome")

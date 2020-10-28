@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """使用DecisionTree引用的ID3
 
+失败品，以其参照价值留存．
 """
 
 #复制黏贴先，还是不用import吧......
