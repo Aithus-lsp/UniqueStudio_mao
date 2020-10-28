@@ -306,9 +306,6 @@ class ID3(DecisionTree):
 
                 return
 
-            
-
-
     pass
 
 
