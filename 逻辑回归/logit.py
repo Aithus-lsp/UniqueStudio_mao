@@ -19,15 +19,12 @@ test_data = pd.read_csv("test.csv")
 test_result = pd.read_csv("gender_submission.csv")
 #处理
 #去除名字,票号
-train_data.drop(["Name", "Ticket"], axis=1, inplace=True)
-test_data.drop(["Name", "Ticket"], axis=1, inplace=True)
+train_data.drop(["Name", "Ticket", "Cabin"], axis=1, inplace=True)
+test_data.drop(["Name", "Ticket", "Cabin"], axis=1, inplace=True)
 #以passengerid为序列,方便结果核对
 train_data.set_index("PassengerId", inplace=True)
 test_data.set_index("PassengerId", inplace=True)
 test_result.set_index("PassengerId", inplace=True)
-#Cabin缺失的数据过多,不好丢弃,填充loss
-train_data.Cabin.fillna("loss", inplace=True)
-test_data.Cabin.fillna("loss", inplace=True)
 #处理缺失值
 train_data.dropna(inplace=True)
 test_data.dropna(inplace=True)
@@ -47,11 +44,16 @@ test_result = test_result.loc[test_data.index]
 
 #预选数据
 #权值，包含偏置
-w = np.zeros(44)
+w = np.zeros(11)
 #造函数
 def sigmoid(x):
     """sigmoid函数，用于二分类决策"""
     return np.exp(x) / (1 + np.exp(x))
+
+def to_one():
+    """归一化处理
+    """
+    pass
 
 def train_logit(data_output=train_data["Survived"], data_droped=copy.deepcopy(train_data.drop("Survived", axis=1))
                 , digit=0.001, step=0.001):
@@ -76,7 +78,7 @@ def train_logit(data_output=train_data["Survived"], data_droped=copy.deepcopy(tr
         w += step * rate
 
 def logit(sample):
-    """利用模型对数据预测
+    """利用模型对数据预测.输出为包含sigmoid函数值和相应输出值的列表．
     
     sample: 预测样本．
     """
@@ -88,9 +90,9 @@ def logit(sample):
     sur = []
     for x in judged:
         if x:
-            sur.append(1)
+            sur.append((x, 1))
         else:
-            sur.append(0)
+            sur.append((x, 0))
     return np.array(sur)
 
 #画图函数
@@ -101,7 +103,10 @@ def cal_TPR(line_predict, line_real):
     line_real: 真实列表．
     """
     TPR = []
-    for x in range(len(line_predict)):
+    sigmoid_line = [x[0] for x in result]
+    max_sigmoid = int(max(sigmoid_line)) + 1
+    min_sigmoid = int(min(sigmoid_line)) - 1
+    for x in range(min_sigmoid, max_sigmoid):
         new_line = [1] * (x + 1) +[0] * (len(line_predict) - x -1)
         #取真值
         TP = sum([new_line[y] == line_real[y] for y in range(len(new_line)) if new_line[y] == 1])
@@ -161,7 +166,7 @@ if __name__ == "__main__":
     length = len(test_data)
     acc_line = []
     for x in range(len(result)):
-        if result[x] == test_result.iloc[x][0]:
+        if result[x][1] == test_result.iloc[x][0]:
             acc_line.append(1)
         else:
             acc_line.append(0)

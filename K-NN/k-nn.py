@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.8
+#!/usr/bin/env python3.7
 """
 一个K-NN算法.
 
@@ -19,15 +19,12 @@ test_data = pd.read_csv("test.csv")
 test_result = pd.read_csv("gender_submission.csv")
 #处理
 #去除名字,票号
-train_data.drop(["Name", "Ticket"], axis=1, inplace=True)
-test_data.drop(["Name", "Ticket"], axis=1, inplace=True)
+train_data.drop(["Name", "Ticket", "Cabin"], axis=1, inplace=True)
+test_data.drop(["Name", "Ticket", "Cabin"], axis=1, inplace=True)
 #以passengerid为序列,方便结果核对
 train_data.set_index("PassengerId", inplace=True)
 test_data.set_index("PassengerId", inplace=True)
 test_result.set_index("PassengerId", inplace=True)
-#Cabin缺失的数据过多,不好丢弃,填充loss
-train_data.Cabin.fillna("loss", inplace=True)
-test_data.Cabin.fillna("loss", inplace=True)
 #处理缺失值
 train_data.dropna(inplace=True)
 test_data.dropna(inplace=True)
@@ -56,16 +53,16 @@ def K_NN(sample=test_data, n=7, data=train_data):
     sur = []
     for y in sample.index:
         #生成（距离，结果）的序列 
-        result_line = [(((data.drop("Survived", axis=1).loc[x]) ** 2 - sample.loc[y] ** 2).sum(), data["Survived"][x])
+        result_line = [((abs(data.drop("Survived", axis=1).loc[x] ** 2 - sample.loc[y] ** 2)).sum(), data["Survived"][x])
                     for x in data.index]
         #排序取值
         result_line = sorted(result_line)[:n]
         #生成第二个元素(结果)的序列
         out_line = [x[1] for x in result_line]
         if 2 * out_line.count(1) <= n:
-            sur.append(1)
-        else:
             sur.append(0)
+        else:
+            sur.append(1)
     return np.array(sur)
 
 
